@@ -79,7 +79,7 @@
         <h3 class="sent-notification"></h3>
         <h2>Contact Form</h2>
         <form name="frmContact" id="" frmContact"" method="post"
-            action="" enctype="multipart/form-data"
+            action="contactform.php" enctype="multipart/form-data"
             onsubmit="return validateContactForm()">
 
             <div class="input-row">
