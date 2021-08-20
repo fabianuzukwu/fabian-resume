@@ -91,42 +91,6 @@
     </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
-    <script type="text/javascript">
-        function sendMail(){
-    var name = $("#name");
-    var email = $("#email");
-    var subject = $("#subject");
-    var message = $("#message");
-
-    if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(subject) && isNotEmpty(message)) {
-        $.ajax({
-            url: './contactform.php',
-            method: 'POST',
-            dataType: 'json',
-            data:{
-                name: name.val(),
-                email: email.val(),
-                subject: subject.val(),
-                message: message.val()
-            }, success: function(response){
-                $('#myForm')[0].reset();
-                $('.sent-notification').text("Message sent successfully.");
-            }
-
-        });
-        
-    }
-}
-
-function isNotEmpty(caller){
-    if(caller.val()==""){
-        caller.css('border', '1px solid red');
-        return false;
-    } else {
-        caller.css('border', '1px solid green');
-        return true;
-    }
-}
-    </script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
 </body>
 </html>
