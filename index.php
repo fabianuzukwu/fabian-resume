@@ -78,90 +78,55 @@
     <div class="first">
         <h3 class="sent-notification"></h3>
         <h2>Contact Form</h2>
-        <form name="frmContact" id="" frmContact"" method="post"
-            action="contactform.php" enctype="multipart/form-data"
-            onsubmit="return validateContactForm()">
-
-            <div class="input-row">
-                <label style="padding-top: 20px;">Name</label> <span
-                    id="userName-info" class="info"></span><br /> <input
-                    type="text" class="input-field" name="userName"
-                    id="userName" />
-            </div>
-            <div class="input-row">
-                <label>Email</label> <span id="userEmail-info"
-                    class="info"></span><br /> <input type="text"
-                    class="input-field" name="userEmail" id="userEmail" />
-            </div>
-            <div class="input-row">
-                <label>Subject</label> <span id="subject-info"
-                    class="info"></span><br /> <input type="text"
-                    class="input-field" name="subject" id="subject" />
-            </div>
-            <div class="input-row">
-                <label>Message</label> <span id="userMessage-info"
-                    class="info"></span><br />
-                <textarea name="content" id="content"
-                    class="input-field" cols="60" rows="6"></textarea>
-            </div>
-            <div>
-                <input type="submit" name="send" class="btn-submit"
-                    value="Send" />
-
-                <div id="statusMessage"> 
-                        <?php
-                        if (! empty($message)) {
-                            ?>
-                            <p class='<?php echo $type; ?>Message'><?php echo $message; ?></p>
-                        <?php
-                        }
-                        ?>
-                    </div>
-            </div>
-        </form>
+        <form id="myForm" action="contactform.php" method="post">
+            <input type="text" name="subject" id="subject" required placeholder="Subject">
+            <br>
+            <input type="text" name="name" id="name" required placeholder="Full Name" minlength="4" <br>
+            <input type="email" name="email" id="email" required placeholder="Your email">
+            <br>
+            <textarea name="message" id="message" cols="30" rows="10" placeholder="Message" minlength="20"></textarea>
+            <br>
+            <button type="submit" value="Submit" onclick="sendEmail()">Send Mail</button>
+    </div>
+    </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
     <script type="text/javascript">
-        function validateContactForm() {
-            var valid = true;
+        function sendMail(){
+    var name = $("#name");
+    var email = $("#email");
+    var subject = $("#subject");
+    var message = $("#message");
 
-            $(".info").html("");
-            $(".input-field").css('border', '#e0dfdf 1px solid');
-            var userName = $("#userName").val();
-            var userEmail = $("#userEmail").val();
-            var subject = $("#subject").val();
-            var content = $("#content").val();
-            
-            if (userName == "") {
-                $("#userName-info").html("Required.");
-                $("#userName").css('border', '#e66262 1px solid');
-                valid = false;
-            }
-            if (userEmail == "") {
-                $("#userEmail-info").html("Required.");
-                $("#userEmail").css('border', '#e66262 1px solid');
-                valid = false;
-            }
-            if (!userEmail.match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/))
-            {
-                $("#userEmail-info").html("Invalid Email Address.");
-                $("#userEmail").css('border', '#e66262 1px solid');
-                valid = false;
+    if (isNotEmpty(name) && isNotEmpty(email) && isNotEmpty(subject) && isNotEmpty(message)) {
+        $.ajax({
+            url: './contactform.php',
+            method: 'POST',
+            dataType: 'json',
+            data:{
+                name: name.val(),
+                email: email.val(),
+                subject: subject.val(),
+                message: message.val()
+            }, success: function(response){
+                $('#myForm')[0].reset();
+                $('.sent-notification').text("Message sent successfully.");
             }
 
-            if (subject == "") {
-                $("#subject-info").html("Required.");
-                $("#subject").css('border', '#e66262 1px solid');
-                valid = false;
-            }
-            if (content == "") {
-                $("#userMessage-info").html("Required.");
-                $("#content").css('border', '#e66262 1px solid');
-                valid = false;
-            }
-            return valid;
-        }
-</script>
+        });
+        
+    }
+}
+
+function isNotEmpty(caller){
+    if(caller.val()==""){
+        caller.css('border', '1px solid red');
+        return false;
+    } else {
+        caller.css('border', '1px solid green');
+        return true;
+    }
+}
     </script>
 </body>
 </html>
